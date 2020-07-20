@@ -5,13 +5,19 @@ using UnityEngine;
 public class Player_motor : MonoBehaviour
 {
     // Start is called before the first frame update
-    float speed = 7f;
+    public float StandardSpeed;
+   float speed;
+   public float MaxSpeed = 20f;
+   public float SpeedDif = 2f;
     public Vector3 mousePosition;
     private Vector2 direction;
     Rigidbody2D rb;
+    Game_Manager GM;
     void Start()
     {
+        speed = StandardSpeed;
         rb = GetComponent<Rigidbody2D>();
+        GM = GameObject.FindGameObjectWithTag("Game_Manager").GetComponent<Game_Manager>();
     }
 
     void zFix()
@@ -42,6 +48,22 @@ public class Player_motor : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb.velocity = Vector2.zero;
+        if(collision.gameObject.tag == "Boost")
+        {
+            if(speed < MaxSpeed)
+            {
+                speed += SpeedDif;
+                Destroy(collision.gameObject);
+            }
+           
+        }else if(collision.gameObject.tag == "Enemy")
+        {
+            speed -= SpeedDif;
+            if(speed <= StandardSpeed)
+            {
+                GM.GameOver();
+            }
+        }
     }
 
     // Update is called once per frame
