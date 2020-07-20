@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Game_Manager : MonoBehaviour
 {
     // Start is called before the first frame update
-    float Timer = 0;
+    public float Timer;
     bool StopTime = false;
     UI_Manager UIM;
     void Start()
@@ -23,8 +23,13 @@ public class Game_Manager : MonoBehaviour
     {
         if(StopTime == false)
         {
-            Timer += Time.deltaTime;
+            Timer -= Time.deltaTime;
             UIM.UISetCounter((int)Timer);
+            if(Timer <= 0)
+            {
+                Timer = 0;
+                GameOver();
+            }
         }
         
     }
