@@ -45,24 +45,28 @@ public class Player_motor : MonoBehaviour
       
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb.velocity = Vector2.zero;
-        if(collision.gameObject.tag == "Boost")
+        if (collision.gameObject.tag == "Boost")
         {
-            if(speed < MaxSpeed)
+            if (speed < MaxSpeed)
             {
                 speed += SpeedDif;
                 Destroy(collision.gameObject);
             }
-           
-        }else if(collision.gameObject.tag == "Enemy")
+
+        }
+
+        if (collision.gameObject.tag == "Enemy")
         {
-            speed -= SpeedDif;
-            if(speed <= StandardSpeed)
+
+            if (speed <= StandardSpeed)
             {
                 GM.GameOver();
             }
+            speed = StandardSpeed;
         }
     }
 

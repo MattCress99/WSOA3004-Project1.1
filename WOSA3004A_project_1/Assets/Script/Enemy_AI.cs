@@ -14,6 +14,7 @@ public class Enemy_AI : MonoBehaviour
     Vector3 NextPosition;
     Game_Manager GM;
     bool StartMotion = false;
+    float TempX,TempY;
     Vector2 Direction;
     Rigidbody2D rb;
     public float speed;
@@ -22,7 +23,6 @@ public class Enemy_AI : MonoBehaviour
     {
         GM = GameObject.FindGameObjectWithTag("Game_Manager").GetComponent<Game_Manager>();
         GCD = Random.Range(1, 4);
-        Debug.Log("GCD :" + GCD);
         rb = GetComponent<Rigidbody2D>();
         CurrentPosition = transform.position;
         if(Radius != null)
@@ -45,13 +45,13 @@ public class Enemy_AI : MonoBehaviour
             NextPosition = new Vector3(transform.position.x, transform.position.y + 10, 0);
             while(Vector3.Distance(reference.transform.position,NextPosition) > Range)
             {
-                float TempX = Random.Range(-4, 4);
-                float TempY = Random.Range(-4, 4);
-                Debug.Log("TempX: " + TempX + " TempY: " + TempY);
+                TempX = Random.Range(-4, 4);
+                 TempY = Random.Range(-4, 4);
                 NextPosition = new Vector3(transform.position.x + TempX, transform.position.y + TempY, 0);
                 Direction = (NextPosition - CurrentPosition).normalized;
-                Debug.Log(Direction);
                 rb.velocity = Direction * speed;
+                Debug.Log(Mathf.Atan((transform.position.y + TempY / transform.position.x + TempX)));
+               transform.Rotate(new Vector3(0f,0f,360*Mathf.Atan((transform.position.y + TempY / transform.position.x + TempX))));
 
             }
 
@@ -60,13 +60,16 @@ public class Enemy_AI : MonoBehaviour
         }
         if(StartMotion == true)
         {
-           // transform.position = Vector3.Lerp(CurrentPosition, NextPosition, counter / GCD * 2);
+         
         }
     }
        
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       // rb.velocity = Vector2.zero;
+        Direction = Direction * -1;
+        rb.velocity = Direction * speed;
+        transform.Rotate(new Vector3(0f, 0f, 360 * Mathf.Atan((transform.position.y + TempY / transform.position.x + TempX))));
+
     }
     // Update is called once per frame
     void Update()

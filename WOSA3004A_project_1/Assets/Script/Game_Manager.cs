@@ -9,6 +9,7 @@ public class Game_Manager : MonoBehaviour
     public float Timer;
     bool StopTime = false;
     UI_Manager UIM;
+    public GameObject MouseEffect;
     void Start()
     {
         UIM = GameObject.FindGameObjectWithTag("UI_Manager").GetComponent<UI_Manager>();
@@ -34,6 +35,16 @@ public class Game_Manager : MonoBehaviour
         
     }
 
+    void Effect()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 Loc = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Loc = new Vector3(Loc.x, Loc.y, 0);
+            Instantiate(MouseEffect, Loc, Quaternion.identity);
+        }
+    }
+
     public void GameWin()
     {
         StopTime = true;
@@ -56,5 +67,6 @@ public class Game_Manager : MonoBehaviour
     {
         TimerCount();
         ResetGame();
+        Effect();
     }
 }
