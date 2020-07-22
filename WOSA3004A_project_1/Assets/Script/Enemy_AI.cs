@@ -13,12 +13,23 @@ public class Enemy_AI : MonoBehaviour
     Vector3 CurrentPosition;
     Vector3 NextPosition;
     Game_Manager GM;
+    bool StartMotion = false;
+    Vector2 Direction;
+    Rigidbody2D rb;
+    public float speed;
+    public GameObject Radius;
     void Start()
     {
         GM = GameObject.FindGameObjectWithTag("Game_Manager").GetComponent<Game_Manager>();
         GCD = Random.Range(1, 4);
         Debug.Log("GCD :" + GCD);
+        rb = GetComponent<Rigidbody2D>();
         CurrentPosition = transform.position;
+        if(Radius != null)
+        {
+            Radius.transform.localScale = new Vector3(Range * 2, Range * 2, 1);
+        }
+      
     }
 
 
@@ -28,6 +39,7 @@ public class Enemy_AI : MonoBehaviour
         counter += Time.deltaTime;
         if(counter >= GCD)
         {
+            StartMotion = true;
             counter = 0;
             CurrentPosition = transform.position;
             NextPosition = new Vector3(transform.position.x, transform.position.y + 10, 0);
@@ -37,16 +49,24 @@ public class Enemy_AI : MonoBehaviour
                 float TempY = Random.Range(-4, 4);
                 Debug.Log("TempX: " + TempX + " TempY: " + TempY);
                 NextPosition = new Vector3(transform.position.x + TempX, transform.position.y + TempY, 0);
+                Direction = (NextPosition - CurrentPosition).normalized;
+                Debug.Log(Direction);
+                rb.velocity = Direction * speed;
+
             }
 
            
 
         }
-        transform.position = Vector3.Lerp(CurrentPosition, NextPosition, counter / GCD * 2);
+        if(StartMotion == true)
+        {
+           // transform.position = Vector3.Lerp(CurrentPosition, NextPosition, counter / GCD * 2);
+        }
     }
+       
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       
+       // rb.velocity = Vector2.zero;
     }
     // Update is called once per frame
     void Update()
