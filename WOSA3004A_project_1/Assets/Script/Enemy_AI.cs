@@ -24,6 +24,7 @@ public class Enemy_AI : MonoBehaviour
         GM = GameObject.FindGameObjectWithTag("Game_Manager").GetComponent<Game_Manager>();
         GCD = Random.Range(1, 4);
         rb = GetComponent<Rigidbody2D>();
+        counter = GCD;
         CurrentPosition = transform.position;
         if(Radius != null)
         {

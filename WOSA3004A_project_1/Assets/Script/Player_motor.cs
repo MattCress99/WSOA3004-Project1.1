@@ -11,10 +11,12 @@ public class Player_motor : MonoBehaviour
    public float SpeedDif = 2f;
     public Vector3 mousePosition;
     private Vector2 direction;
+    Animator AM;
     Rigidbody2D rb;
     Game_Manager GM;
     void Start()
     {
+        AM = GetComponent<Animator>();
         speed = StandardSpeed;
         rb = GetComponent<Rigidbody2D>();
         GM = GameObject.FindGameObjectWithTag("Game_Manager").GetComponent<Game_Manager>();
@@ -34,6 +36,27 @@ public class Player_motor : MonoBehaviour
             mousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
             direction = (mousePosition - transform.position).normalized;
             rb.velocity = new Vector2(direction.x * speed * 2, direction.y * speed * 2);
+            if(direction.y >= 1)
+            {
+
+            }
+            if (direction.x > 0 && Mathf.Abs(direction.y) < 0.5)
+            {
+                //Right
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90f));
+            }
+            if(direction.x < 0 && Mathf.Abs(direction.y) < 0.5)
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90f));
+            }
+            if(direction.y < 0 && Mathf.Abs(direction.x) < 0.5)
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0f));
+            }
+            if(direction.y > 0 && Mathf.Abs(direction.x) < 0.5)
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, -180f));
+            }
         }
         
         zFix();
@@ -70,9 +93,22 @@ public class Player_motor : MonoBehaviour
         }
     }
 
+
+    void UpdateAnim()
+    {
+        if(Mathf.Abs(rb.velocity.magnitude) > 0)
+        {
+            AM.SetBool("Moving", true);
+        }else if(Mathf.Abs(rb.velocity.magnitude) == 0)
+        {
+            AM.SetBool("Moving", false);
+        }
+       
+    }
     // Update is called once per frame
     void Update()
     {
         Motion();
+        UpdateAnim();
     }
 }
