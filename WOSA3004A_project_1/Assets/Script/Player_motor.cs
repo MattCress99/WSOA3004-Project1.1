@@ -32,9 +32,14 @@ public class Player_motor : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
+            if(rb.velocity.magnitude != 0)
+            {
+                rb.velocity = Vector2.zero;
+            }
             mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition = new Vector3(mousePosition.x, mousePosition.y, 0);
             direction = (mousePosition - transform.position).normalized;
+            
             rb.velocity = new Vector2(direction.x * speed * 2, direction.y * speed * 2);
             if(direction.y >= 1)
             {
@@ -84,7 +89,8 @@ public class Player_motor : MonoBehaviour
 
         if (collision.gameObject.tag == "Enemy")
         {
-
+            direction = -direction;
+            rb.AddForce(direction * speed*100);
             if (speed <= StandardSpeed)
             {
                 GM.GameOver();

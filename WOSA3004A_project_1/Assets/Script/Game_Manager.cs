@@ -34,6 +34,10 @@ public class Game_Manager : MonoBehaviour
         }
         
     }
+    public float ReturnTime()
+    {
+        return Timer;
+    }
 
     void Effect()
     {
@@ -48,7 +52,12 @@ public class Game_Manager : MonoBehaviour
     public void GameWin()
     {
         StopTime = true;
-        UIM.SetGameOverText("You win! With a time of " + Timer + " Seconds!");
+        UIM.SetGameOverText("You win! With a time of " + Timer + " Seconds! Press Space to restart!");
+        if(Timer > PlayerPrefs.GetFloat("HighScore", 0))
+        {
+            PlayerPrefs.SetFloat("HighScore", Timer);
+        }
+        
     }
 
     private void ResetGame()
@@ -62,11 +71,22 @@ public class Game_Manager : MonoBehaviour
         }
     }
 
+
+    void QuitGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         TimerCount();
         ResetGame();
         Effect();
+        QuitGame();
     }
 }
