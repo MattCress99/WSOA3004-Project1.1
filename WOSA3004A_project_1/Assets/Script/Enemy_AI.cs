@@ -42,9 +42,9 @@ public class Enemy_AI : MonoBehaviour
             StartMotion = true;
             counter = 0;
             CurrentPosition = transform.position;
-            NextPosition = new Vector3(transform.position.x, transform.position.y + 10, 0);
-            while(Vector3.Distance(reference.transform.position,NextPosition) > Range)
-            {
+          //  NextPosition = new Vector3(transform.position.x, transform.position.y + 10, 0);
+            //while(Vector3.Distance(reference.transform.position,NextPosition) > Range)
+            //{
                 TempX = Random.Range(-4, 4);
                  TempY = Random.Range(-4, 4);
                 NextPosition = new Vector3(transform.position.x + TempX, transform.position.y + TempY, 0);
@@ -53,7 +53,7 @@ public class Enemy_AI : MonoBehaviour
                 Debug.Log(Mathf.Atan((transform.position.y + TempY / transform.position.x + TempX)));
                transform.Rotate(new Vector3(0f,0f,360*Mathf.Atan((transform.position.y + TempY / transform.position.x + TempX))));
 
-            }
+            //}
 
            
 
